@@ -1,0 +1,30 @@
+.editor-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    /* padding: 20px; */
+    width: 70%;
+    max-width: 800px;
+    border-radius: 10px;
+  }
+
+.editor-container .quill {
+    height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+}
+
+.editor-header {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.editor-body {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+  
