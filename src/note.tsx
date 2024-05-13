@@ -1,10 +1,8 @@
-
-
 class Note {
-    id: number = 0;
-    title: string = '';
-    content: string = '';
-    updatedAt: Date = new Date();
+  id: number = 0;
+  title: string = "";
+  content: string = "";
+  updatedAt: Date = new Date();
 }
 
-export default Note
+export default Note;
