@@ -18,31 +18,34 @@ import BootstrapEditor from "./components/BootstrapEditor";
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [showEditor, setShowEditor] = useState(false);
+  const [noteToBeDeleted, setNoteToBeDeleted] = useState<number>(-1);
 
   const toggleEditor = () => {
     setShowEditor(!showEditor);
   };
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/notes", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const notes: Note[] = await response.json();
-        console.log("notes: \n", notes);
-        setNotes(notes);
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
+  const fetchNotes = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/notes", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const notes: Note[] = await response.json();
+      console.log("notes: \n", notes);
+      setNotes(notes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     fetchNotes();
   }, []);
 
+  
   const handleAddNote = async (title: string, content: string) => {
     // event.preventDefault()
     const id = notes.length + 1;
@@ -70,8 +73,10 @@ function App() {
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const toggleDeleteModal = () => {
+  const toggleDeleteModal = (id: number) => {
     setShowDeleteModal(!showDeleteModal);
+    setNoteToBeDeleted(id);
+    fetchNotes();
   };
 
   return (
@@ -89,7 +94,7 @@ function App() {
               <FontAwesomeIcon
                 className="notes-header-icon"
                 icon={faTrashCan}
-                onClick={toggleDeleteModal}
+                onClick={() => toggleDeleteModal(note.id)}
               />
             </div>
             <h2>{note.title}</h2>
@@ -100,8 +105,16 @@ function App() {
           </div>
         ))}
       </div>
-      <BootstrapEditor show={showEditor} onClose={toggleEditor} addNote={handleAddNote} />
-      <DeleteModal show={showDeleteModal} toggleDeleteModal={toggleDeleteModal} />
+      <BootstrapEditor
+        show={showEditor}
+        onClose={toggleEditor}
+        addNote={handleAddNote}
+      />
+      <DeleteModal
+        show={showDeleteModal}
+        toggleDeleteModal={toggleDeleteModal}
+        noteToBeDeleted={noteToBeDeleted}
+      />
     </div>
   );
 }
