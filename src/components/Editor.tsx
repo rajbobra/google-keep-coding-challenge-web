@@ -6,12 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-regular-svg-icons";
 import Note from "../note";
 
-interface Props {
+interface EditorProps {
   onClose: any;
   addNote: any;
 }
 
-const Editor = (props: Props) => {
+const Editor = (props: EditorProps) => {
   const handler = () => {};
 
   const [notes, setNotes] = useState<Note[]>([]);
