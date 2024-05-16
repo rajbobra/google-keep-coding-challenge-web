@@ -10,10 +10,10 @@ import {
   faEdit,
   faPlusSquare,
 } from "@fortawesome/free-regular-svg-icons";
-import Editor from "./components/Editor";
 import RenderHTML from "./components/renderhtml";
 import DeleteModal from "./components/DeleteModal";
-import BootstrapEditor from "./components/BootstrapEditor";
+import BootstrapEditor from "./components/Editor";
+import { Button } from "react-bootstrap";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -23,7 +23,6 @@ function App() {
   const toggleEditor = () => {
     setShowEditor(!showEditor);
   };
-
 
   const fetchNotes = async () => {
     try {
@@ -45,7 +44,6 @@ function App() {
     fetchNotes();
   }, []);
 
-  
   const handleAddNote = async (title: string, content: string) => {
     // event.preventDefault()
     const id = notes.length + 1;
