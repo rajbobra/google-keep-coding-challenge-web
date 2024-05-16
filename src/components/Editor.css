@@ -14,7 +14,8 @@
   }
 
 .editor-container .quill {
-    height: 400px; /* Adjust height as needed */
+    min-block-size: 400px; /* Adjust height as needed */
+    max-height: 800px;
     overflow-y: auto;
 }
 

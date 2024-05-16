@@ -10,32 +10,37 @@ import {
   faEdit,
   faPlusSquare,
 } from "@fortawesome/free-regular-svg-icons";
-import Editor from "./components/Editor";
 import RenderHTML from "./components/renderhtml";
+import DeleteModal from "./components/DeleteModal";
+import BootstrapEditor from "./components/Editor";
+import { Button } from "react-bootstrap";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
-
-  // const [title, setTitle] = useState("");
-  // const [content, setContent] = useState("");
   const [showEditor, setShowEditor] = useState(false);
+  const [noteToBeDeleted, setNoteToBeDeleted] = useState<number>(-1);
 
   const toggleEditor = () => {
     setShowEditor(!showEditor);
   };
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/notes");
-        const notes: Note[] = await response.json();
-        console.log("notes: \n", notes);
-        setNotes(notes);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchNotes = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/notes", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const notes: Note[] = await response.json();
+      console.log("notes: \n", notes);
+      setNotes(notes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     fetchNotes();
   }, []);
 
@@ -65,6 +70,13 @@ function App() {
     }
   };
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const toggleDeleteModal = (id: number) => {
+    setShowDeleteModal(!showDeleteModal);
+    setNoteToBeDeleted(id);
+    fetchNotes();
+  };
+
   return (
     <div className="app-container">
       <FontAwesomeIcon
@@ -80,6 +92,7 @@ function App() {
               <FontAwesomeIcon
                 className="notes-header-icon"
                 icon={faTrashCan}
+                onClick={() => toggleDeleteModal(note.id)}
               />
             </div>
             <h2>{note.title}</h2>
@@ -90,7 +103,16 @@ function App() {
           </div>
         ))}
       </div>
-      {showEditor && <Editor onClose={toggleEditor} addNote={handleAddNote} />}
+      <BootstrapEditor
+        show={showEditor}
+        onClose={toggleEditor}
+        addNote={handleAddNote}
+      />
+      <DeleteModal
+        show={showDeleteModal}
+        toggleDeleteModal={toggleDeleteModal}
+        noteToBeDeleted={noteToBeDeleted}
+      />
     </div>
   );
 }
