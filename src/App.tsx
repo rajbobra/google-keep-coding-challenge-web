@@ -13,7 +13,7 @@ import {
 import RenderHTML from "./components/renderhtml";
 import DeleteModal from "./components/DeleteModal";
 import BootstrapEditor from "./components/Editor";
-import { Button } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -78,12 +78,14 @@ function App() {
   };
 
   return (
+    <div className="body">
+        <Navbar bg="dark" data-bs-theme="dark" sticky="top">
+          <Container>
+            <Navbar.Brand href="#home" className='m-auto'>Google Keep Clone</Navbar.Brand>
+          </Container>
+        </Navbar>
+      <Button className="add-button" variant="primary" onClick={toggleEditor}>Add Note</Button>
     <div className="app-container">
-      <FontAwesomeIcon
-        icon={faPlusSquare}
-        className="add-new-note-plus fa-2x"
-        onClick={toggleEditor}
-      />
       <div className="notes-grid">
         {notes.map((note) => (
           <div className="notes-item">
@@ -113,6 +115,7 @@ function App() {
         toggleDeleteModal={toggleDeleteModal}
         noteToBeDeleted={noteToBeDeleted}
       />
+    </div>
     </div>
   );
 }
